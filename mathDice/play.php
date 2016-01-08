@@ -1,78 +1,23 @@
-<?php    
-	require_once 'login.php';	 
-	require_once 'functions.php';
+<?php
   	require_once 'dace.php';
   	require_once './lib/page.php';
-    
+
   	$pageGame = new Page();
   	echo $pageGame->getHeaderGame();
-
+	require_once 'login.php';
+	require_once 'operations.php';
 ?>
-  <body>
-	  	<!--Menú superior especial para dispositivos móviles. El menú se minimizará a un solo botón-->
-	 <div  class="container">
-     <nav class="navbar navbar-inverse">
-        <div>
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span> 
-            </button>
-            <a class="navbar-brand" href="#"><?php echo $menu['title'][$language];?></a>
-          </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-			    <!--Inicio de los botones del menú superior-->
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#"><?php echo $menu['general'][$language];?></a></li>
-              <!--Primer menú desplegable-->
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $menu['game'][$language];?>
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                	<li><a href='#' onclick = ''>Normal</a></li>
-                	<li><a href='#' onclick = 'cambiarJuego("junior")'>Junior</a></li>
-                  	<li><a href='#' onclick = 'cambiarJuego("pro")'>Junior pro</a></li>
-                </ul>
-              </li>
-			   <!--Segundo menú desplegable-->
-               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $menu['help'][$language];?>
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
 
-          			<?php
-          				escribeSubmenu ($menu, 'submenu2', $language);
-          			?> 
-          			
-                </ul>
-              </li>
-            </ul>
-            <!--Botones del extremo derecho superior-->
-            <ul class="nav navbar-nav navbar-right">
-            <li><a href="userData.php"><span class="glyphicon glyphicon-user"></span><strong> Perfil</strong></a></li>
-
-
-				<li class="dropdown">
-	                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo "<strong> Hola ".$player->getName()."</strong>"?>
-	                <span class="caret"></span></a>
-		                <ul class="dropdown-menu">
-			                <li><a href='#'><?php echo "<strong>Apellido: ".$player->getLastName()."</strong>"?></a></li>
-			              	<li><a href='#'><?php echo "<strong>Edad: ".$player->getAge()."</strong>"?></a></li>
-		                </ul>
-              	</li>
-
-
-
-              <li><a href="#"><span class="glyphicon glyphicon-thumbs-up"></span><?php echo "<strong> Puntos: ".$player->getScore()."</strong>"?></a></li>
-              
-            </ul>
-          </div>
-        </div>
-     </nav>
-     </div>	<!-- navbar -->
+  <body onload="showModalWindow()">
+  	
+	<?php
+		//Barra superior de navegación.
+		$pageGame->getNavBar();
+		//Formulario modal oculto para modificar los datos del jugador (botón perfil).
+		$pageGame->getNewDataForm();
+	?>
 	  	
-	<!-- Contenedor global -->
+	<!-- Contenedor global de dados y botones -->
     <div class="container"> 
     	<!-- Texto que muestra el tipo de juego según la edad del usuario -->
 		<div class="row">
@@ -89,7 +34,6 @@
 				<div class="col-md-4">
 				</div>
 				<div class='col-md-4 dodec'>
-					<!--<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/">-->
 					<img src='img/dodec-<?php $dodecaedro=generarNumAleatorio('dodecaedro'); echo $dodecaedro; ?>.png'></img>
 				</div>
 				<div class="col-md-4">
@@ -126,16 +70,12 @@
 	
 		<!-- Pantalla operaciones y resultados -->
 		<div class="col-md-4 marcador">
-			<div class="jumbotron" style="height: 25em;">
-				<h2>Operaciones</h2>
-				<br><br>
-				<p id="operaciones"></p>
-				<!--<p>
-					<a class="btn btn-primary btn-large" href="#">Learn more</a>
-				</p>-->
+			<div id="pantalla">
+				<h1> Operaciones:</h1>
+				<h1 id="operaciones"></h1>
 			</div>
 			<!-- Formulario oculto de valores de dados y operaciones -->
-			<form action="showResult.php" method="post">
+			<form action="play.php" method="post">
 				<input type="hidden" name="dado1" id="campoDado1"><!--Nos sirve para comparar y validar el valor del dado-->
 				<input type="hidden" name="operacion1" id="operacion1"><!--Nos sirve para comparar y validar el valor de la operación-->
 				<input type="hidden" name="dado2" id="campoDado2">
@@ -146,13 +86,12 @@
 				<input type="hidden" name="operacion4" id="operacion4">
 				<input type="hidden" name="dado5" id="campoDado5">
 				<input type="hidden" name="dodecaedro" id="dodecaedro" value="<?php echo $dodecaedro ?>">
+				<input type='hidden' name='result'/>
 				<!-- Botón math dice -->  
-				<button type="submit" id="mathdice" class="btn btn-block btn-lg btn-info">math dice</button>
+				<button type="submit" id="mathdice" class="btn btn-block btn-lg btn-info btn-large">math dice</button>
 			</form>			
 		</div>
 	</div>
-
-
 
 	<!-- Botones de operaciones -->
 	<div class="row">
@@ -175,9 +114,9 @@
 	</div>
 </div>
 
- 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>		
-	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>	
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<?php
+		//Pie de página.
+		echo $pageGame->getFooter();
+	?>
 </body>
-  
 </html>

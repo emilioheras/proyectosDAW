@@ -1,5 +1,4 @@
-.dodec{	
-  margin-top: 3em;
+.dodec{				
 	text-align: center;
 }
 
@@ -9,24 +8,15 @@
 }
 
 .operation{
-	margin-top: 5.5em;
+	margin-top: 8em;
 }
 
-#pantalla{
-   margin-top: 2em;
-   text-align: center;
-   height: 15em;
-   border-radius:2em;
-}
-
-#operaciones {
-	margin-top: 1.5em;
-	font-weight: bold;
+h1 {
+	margin-bottom: 1.5em;
 }
 
 .marcador {
-	margin-top: 6em;
-	color: #455A64;
+	margin-top: 3em;
 }
 
 .por{
@@ -39,17 +29,25 @@
 
 #mathdice{
   visibility: hidden;
-  margin-top: 2em;
 }
 
+/*#modal {
+     display: none;
+     position: absolute;
+
+     background: #fff;
+     color: #333;
+     z-index:1002;
+     overflow: auto;
+}*/
 
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-
+  /*background-color: #eee;*/
   /* Location of the image */
   background-image: url(../img/cuadrados.jpg);
-
+  /*background-image: url(../img/junior3.jpg);*/
   /* Image is centered vertically and horizontally at all times */
   background-position: center center;
   

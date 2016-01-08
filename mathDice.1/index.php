@@ -1,19 +1,19 @@
 <?php
   session_start();
   require_once './lib/connectionDB.php';
-  require_once './lib/page.php';
   //Si quisieramos volver al formulario inicial con una sesión iniciada, nos redirige al juego.
   if(isset($_SESSION['player'])){  
 	     header('location: play.php');
 		}
-  
+	
+  require_once './lib/page.php';
   $pageIndex = new Page();
   echo $pageIndex->getHeaderIndex();
       //Si la sesión tiene valor de error de conexión, mostraremos una ventana modal con info.
       if(isset($_SESSION['errorDB'])){
         $connec = new ConnectionDB();
         $connec->checkConnection();
-        $connec->showMessage('connect', null, null);
+        $connec->showMessage('connect', null);
         //destruimos la sesión para limpiar todo.
         session_destroy();
 		  }

@@ -2,7 +2,7 @@
 <?php
 
 	// Variable para establecer el idioma del menu.
-	$language = "en";	
+	$language = "es";	
 	
 	// Array de los botones del menu superior.
 	$menu = array('title' => array('es' => "Math Dice", 'en' => "Math Dice"),
